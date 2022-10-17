@@ -1,0 +1,70 @@
+<ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" color = "rgb(246, 44, 92)" type = "square-loader" [fullScreen] = "true"><p style="color: white" > Loading... </p></ngx-spinner>
+
+<div class="products my-5">
+    <div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered" style="max-width: 900px !important ;">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalToggleLabel" *ngIf="addOrUpdate">Add Product </h5>
+              <h5 class="modal-title" id="exampleModalToggleLabel" *ngIf="!addOrUpdate">Update Product </h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+               <form [formGroup]="addForm" (ngSubmit)="supmitProduct()" >
+                <div class="row">
+                    <div class="col-md-4">
+                        <label class="my-2" for="">Title</label>
+                        <input formControlName="title" class="form-control" type="text" placeholder="Title">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="my-2" for="">Price</label>
+                        <input formControlName="price" class="form-control"  type="text" placeholder="Price">
+                    </div>
+                    <div class="col-md-4">
+                        <app-select (selcedValu)="getSelectedCategory($event)" [title]="'Categories'" [data] = "categories" [select] = "addForm.value.category"></app-select>    
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 ">
+                        <label class="my-2" for="">Image</label>
+                        <img src="{{BaseUrl}}">
+                        <input (change)="getImagePath($event)" type="file" name="" id="">
+                    </div>
+                    <div class="col-md-8">
+                        <label class="my-2" for="">Description</label>
+                        <textarea formControlName="description" class="form-control sizee" placeholder="Description"></textarea>
+                    </div>
+                </div>
+                <div>
+                    <button [disabled]="addForm.invalid" class="btn btn-success d-block mt-3 ms-auto" type="submit" *ngIf="addOrUpdate">ADD</button>
+                    <button [disabled]="addForm.invalid" class="btn btn-success d-block mt-3 ms-auto" type="submit" *ngIf="!addOrUpdate">UPDATE</button>
+                </div>
+               </form>
+            </div>
+          </div>
+        </div>
+    </div>
+    <button class="btn btn-success form-control my-3" data-bs-toggle="modal" data-bs-target="#exampleModalToggle" (click)="addOrUpdate=true">Add Product</button>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Image</th>
+                <th class="hidden">Name</th>
+                <th>Category</th>
+                <th>Price</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let product of products" title="Click For More Details">
+                <td class="imd-container"  routerLink="/details/{{product.id}}">
+                    <img src="{{product.image}}" class="img-fluid">
+                </td>
+                <td  routerLink="/details/{{product.id}}" class="hidden">{{product.title}}</td>
+                <td  routerLink="/details/{{product.id}}">{{product.category}}</td>
+                <td  routerLink="/details/{{product.id}}">{{product.price}} L.E</td>
+                <td><button class="btn btn-warning form-control my-3" data-bs-toggle="modal" data-bs-target="#exampleModalToggle" (click)="updateProduct(product)">Update</button></td>
+            </tr>
+        </tbody>
+    </table>
+</div>

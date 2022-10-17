@@ -1,0 +1,72 @@
+<div class="cartBox">
+    <ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" color = "rgb(246, 44, 92)" type = "square-loader" [fullScreen] = "true"><p style="color: white" > Loading... </p></ngx-spinner>
+    <div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered" style="max-width: 900px !important ;">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalToggleLabel">Cart List</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <td>Image</td>
+                            <td class="hidden">Title</td>
+                            <td>Price</td>
+                            <td>Quantity</td>
+                            <td>Total</td>
+                        </tr>
+                    </thead>
+            
+                    <tbody>
+                        <tr *ngFor="let cartInViewItem of cartInViewItemDetails" >
+                            <td><img src="{{cartInViewItem.item.image}}"></td>
+                            <td class="hidden">{{cartInViewItem.item.title}}</td>
+                            <td>{{cartInViewItem.item.price}}</td>
+                            <td>{{cartInViewItem.qty}}</td>
+                            <td>{{cartInViewItem.item.price * cartInViewItem.qty }} L.E</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+          </div>
+        </div>
+    </div>
+
+    <form [formGroup] = "filterForm" (ngSubmit)="applyFilter()">
+        <div class="filter row">
+            <div class="col-md-3 my-2" >
+                <label class="mb-2">Start Date</label>
+                <input class="form-control" type="date" formControlName = "startDate" >
+            </div>
+            <div class="col-md-3 my-2">
+                <label class="mb-2">End Date</label>
+                <input class="form-control" type="date" formControlName = "endDate">
+            </div>
+            <div class="col-md-3 my-2 d-flex align-items-end">
+                <button type="submit" class="btn btn-success">Apply</button>
+            </div>
+        </div>
+    </form>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <td>Date</td>
+                <td>Quantity</td>
+                <td></td>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr *ngFor="let item of carts  ; let id = index">
+                <td>{{item.date | date:"shortDate"}}</td>
+                <td>{{item.products.length}}</td>
+                <td>
+                    <button class="btn btn-danger me-2" (click)="deleteCart(item.id)">Delete</button>
+                    <button class="btn btn-primary" data-bs-toggle="modal" href="#exampleModalToggle" role="button" (click)="view(item.products)">View</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
